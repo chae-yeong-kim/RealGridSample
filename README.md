@@ -8,7 +8,7 @@ $ git push -u origin main
 ```
 
 # 프로젝트 구동방법
-
+```
 94102053@LCSC16V913 MINGW64 /d/work/JSiife/realgrid2-examples/javascript-iife (main)
 $ npm run start-live-server
 
@@ -16,3 +16,4 @@ $ npm run start-live-server
 > live-server --port=8090
 
 Serving "D:\work\JSiife\realgrid2-examples\javascript-iife" at http://127.0.0.1:8090
+```
