@@ -1,0 +1,16 @@
+{
+  "name": "javascript-iife",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "dev": "node app.js", 
+    "start-live-server": "live-server --port=8090"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "live-server": "^1.2.0"
+  }
+}
