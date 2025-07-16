@@ -3,16 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTML Code Converter</title>
+    <title>Code Converter</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .tab-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 40px;
+        }
+        .tab-header {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+    .tab-header button {
+        padding: 10px 24px;
+        font-size: 16px;
+        border: none;
+        background: #444; /* 진한 회색 */
+        color: #fff;
+        cursor: pointer;
+        border-radius: 6px 6px 0 0;
+        transition: background 0.2s;
+    }
+    .tab-header button.active {
+        background: #222; /* 더 진한 회색 */
+        border-bottom: 2px solid #0078d4;
+        font-weight: bold;
+        color: #fff;
+    }
+        .tab-content {
+            width: 100%;
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+        }
+        textarea {
+            width: 40%;
+            height: 800px;
+            resize: vertical;
+        }
+        #convertButton, #sqlConvertButton {
+            width: 100px;
+            height: 100px;
+            font-size: 16px;
+            margin: 0 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>HTML Code Converter</h1>
-        <textarea id="sourceCodeA" placeholder="Input Source Code A"></textarea>
-        <button id="convertButton">Convert</button>
-        <textarea id="sourceCodeB" placeholder="Converted Source Code B" readonly></textarea>
+    <h1 style="text-align:center;">HTML Code Converter</h1>
+    <div class="tab-container">
+        <div class="tab-header">
+            <button id="tabGrid" class="active">Grid Converter</button>
+            <button id="tabSQL">SQL Converter</button>
+        </div>
+        <div id="gridTabContent" class="tab-content active">
+            <div class="container">
+                <textarea id="sourceCodeA" placeholder="Input Source Code A"></textarea>
+                <button id="convertButton">Convert →</button>
+                <textarea id="sourceCodeB" placeholder="Converted Source Code B" readonly></textarea>
+            </div>
+        </div>
+        <div id="sqlTabContent" class="tab-content">
+            <div class="container">
+                <textarea id="sqlSourceA" placeholder="Input SQL"></textarea>
+                <button id="sqlConvertButton">Convert →</button>
+                <textarea id="sqlSourceB" placeholder="Converted SQL" readonly></textarea>
+            </div>
+        </div>
     </div>
-    <script src="app.js"></script>
+    <script src="grid.js"></script>
+    <script src="sql.js"></script>
+    <script>
+        // 탭 전환 스크립트
+        const tabGrid = document.getElementById('tabGrid');
+        const tabSQL = document.getElementById('tabSQL');
+        const gridTabContent = document.getElementById('gridTabContent');
+        const sqlTabContent = document.getElementById('sqlTabContent');
+
+        tabGrid.addEventListener('click', function() {
+            tabGrid.classList.add('active');
+            tabSQL.classList.remove('active');
+            gridTabContent.classList.add('active');
+            sqlTabContent.classList.remove('active');
+        });
+
+        tabSQL.addEventListener('click', function() {
+            tabSQL.classList.add('active');
+            tabGrid.classList.remove('active');
+            sqlTabContent.classList.add('active');
+            gridTabContent.classList.remove('active');
+        });
+        // SQL Converter용 js 연동은 필요시 <script src="sql.js"></script> 추가
+    </script>
 </body>
 </html>
