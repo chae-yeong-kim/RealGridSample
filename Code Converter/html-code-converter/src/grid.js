@@ -42,8 +42,14 @@ document.addEventListener('DOMContentLoaded', function() {
             // ------------- Combo 주석 처리 로직 추가 -------------
             let isCombo = /editstyle\s*=\s*combo/gi.test(line) && /data\s*=/gi.test(line);
 
+            // color={decode(colorFlag,"1","#747474", "black")} 삭제
+            col = col.replace(/color\s*=\s*\{decode\([^\}]+\)\}/gi, '');
+
+            // decao=0 삭제 
+            col = col.replace(/decao\s*=\s*0/gi, '');
+
             // HeadColor=, Edit=, EditStyle=, data=, suppress= 태그 값 모두 제거 (대소문자 구분 없이, 띄어쓰기 단위)
-            col = col.replace(/\b(headcolor|edit|editstyle|data|suppress)\s*=\s*("[^"]*"|<%=[^%>]+%>|[^\s,}]*)/gi, '');
+            col = col.replace(/\b(headcolor|edit|editstyle|data|suppress|color|decode)\s*=\s*("[^"]*"|<%=[^%>]+%>|[^\s,}]*)/gi, '');
 
             // 1. show=true, show =true, show= true, show = true 모두 제거
             col = col.replace(/\bshow\s*=\s*true\b/gi, '');
@@ -82,6 +88,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     col += ', styleName: "grid-input-bg-disable"';
                 }
             }
+
+            // editable: 태그는 editable= 로 바꿔주기
+            //col = col.replace(/editable\s*:/gi, 'editable=');
 
             // header 내 text: "..." 항목만 제거 (쉼표도 같이)
             col = col.replace(/(header\s*:\s*{)[^}]*text:\s*"[^"]*",?/gi, '$1');

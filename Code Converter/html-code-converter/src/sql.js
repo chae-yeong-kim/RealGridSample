@@ -13,22 +13,25 @@ document.addEventListener('DOMContentLoaded', function() {
             /<statement\s+name=['"]([^'"]+)['"]\s*>/gi,
             '<select id="$1" parameterType="java.util.HashMap" resultType="LowerCamelCaseMap">'
         );
-
+        // 이부분은
         // 2. <append condition="${factoryName}.NOTEMPTY" id="#1"> ... </append> 변환
         let appendBlocks = {};
         input = input.replace(
             /<append\s+condition="\$\{([^}]+)\}\.NOTEMPTY"\s+id="(#\d+)">\s*([\s\S]*?)<\/append>/gi,
             function(match, varName, hashId, inner) {
-                appendBlocks[hashId] = [
+                // 필드명 추출: AND    필드명 IN (${변수명:in})
+                let fieldMatch = inner.match(/AND\s+([^\s]+)\s+IN\s*\(\$\{[^}]+:in\}\)/i);
+                let fieldName = fieldMatch ? fieldMatch[1] : '';
+
+                return [
                     `      <!-- ${hashId}-->`,
                     `      <if test="${varName} != null and ${varName} != ''">`,
-                    `           AND    factory_code IN             `,
+                    `           AND    ${fieldName} IN             `,
                     `           <foreach collection="${varName}" index="idx" open="(" close=")" separator=", ">`,
                     `                 #{${varName}[\${idx}].${varName}}`,
                     `            </foreach>`,
                     `      </if>`
                 ].join('\n');
-                return '';
             }
         );
 
@@ -53,6 +56,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // 4. </statement>를 </select>로 변경
         input = input.replace(/<\/statement>/gi, '</select>');
+
+        // 5. 소스의 가장 마지막에 ${ 를 만나면 #{ 로 치환
+        input = input.replace(/\$\{([^}]+)\}/g, '#{$1}');
 
         sqlSourceB.value = input;
     });
